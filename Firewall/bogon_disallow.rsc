@@ -17,4 +17,4 @@
 /ip firewall filter 
     add action=drop chain=input comment=bogon_disallow \
         in-interface=[/interface get [find comment=inet or comment=WAN] name] \
-        src-address-list=bogon
+        src-address-list=bogon disabled=yes

@@ -19,7 +19,7 @@
     # Drop packages from bogon networks
     add action=drop chain=input comment=bogon_disallow \
         in-interface=[/interface get [find comment=inet or comment=WAN] name] \
-        src-address-list=bogon
+        src-address-list=bogon disabled=yes
 
     # Add VPN brutforce client ip to address list
     add action=drop chain=input comment=IPSec_drop_bruteforce \
@@ -28,9 +28,10 @@
 
     # Allow VPN connection
     add action=accept chain=input comment=VPN_IPSec \
-        port=1701,500,4500 protocol=udp
+        port=1701,500,4500 protocol=udp disabled=yes
 
-    add action=accept chain=input protocol=ipsec-esp
+    add action=accept chain=input protocol=ipsec-esp \
+        disabled=yes
 
     # Allow icmp 50p/s if more drop them
     add action=accept chain=input comment=icmp_accept in-interface=[/interface get \
@@ -96,18 +97,13 @@
     add action=add-src-to-address-list address-list=ddos-attackers \
         address-list-timeout=5m chain=detect-ddos
 
-    # Drop WAN DNS requests
-    add action=drop chain=input comment=DNS_drop_WAN dst-port=53 \
-        in-interface=[/interface get [find comment=inet or comment=WAN] name] \
-        protocol=tcp
+    # Limit connections to host
+    add action=add-dst-to-address-list address-list=connection-limit \
+        address-list-timeout=30m chain=input comment=limit_connections \
+        connection-limit=200,32 \
+        in-interface=[/interface get [find comment=inet or comment=WAN] name]
 
-    add action=drop chain=input dst-port=53 in-interface=[/interface get \
-        [find comment=inet or comment=WAN] name] protocol=udp
-
-    # Deny WinBox access not from allowed (add you computer ip in address list before enable)
-    add action=drop chain=input comment="Winbox_drop_not_from\1F_lan" disabled=yes \
-        dst-port=8291 protocol=tcp src-address-list=!winbox-allow
-
+    # Accept established connections
     add action=accept chain=input comment="accept establish & related" \
         connection-state=established,related
 
