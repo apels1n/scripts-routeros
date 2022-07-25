@@ -109,11 +109,12 @@
 
 
 /ip firewall raw
+
     # Drop port scan
     add action=drop chain=prerouting comment=Drop_Port_scan \
         src-address-list="port scanners"
 
-    # Drop DDos
+    # Drop DDoS
     add action=drop chain=prerouting comment=Drop_DDoS \
         dst-address-list=ddos-target src-address-list=ddos-attackers
 
@@ -122,10 +123,20 @@
         dst-port=500,4500 protocol=udp src-address-list=IPSEC_failed_state2 \
         in-interface=[/interface get [find comment=inet or comment=WAN] name] 
         
-
     # Limit connections
     add action=drop chain=prerouting comment=Limit_connections \
         dst-address-list=connection-limit
+    
+    # Drop DNS requests
+    add action=drop chain=prerouting comment=Drop_DNS_requests \
+        dst-port=53 in-interface=inet protocol=tcp
+
+    add action=drop chain=prerouting dst-port=53 in-interface=inet \
+        protocol=udp
+
+    # Drop winbox not from allowed IPs
+    add action=drop chain=prerouting comment=Drop_winbox_not_from_allowed \
+        disabled=yes dst-port=8291 protocol=tcp src-address-list=!winbox-allow
 
 
 /ip firewall service-port
@@ -138,3 +149,6 @@
     set udplite disabled=yes
     set dccp disabled=yes
     set sctp disabled=yes
+
+/ip settings
+    set tcp-syncookies=yes
