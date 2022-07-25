@@ -18,4 +18,5 @@
     add action=drop chain=prerouting dst-address-list=ddos-target \
         src-address-list=ddos-attackers
 
-/ip/settings/set tcp-syncookies=yes
+/ip/settings/ 
+    set tcp-syncookies=yes
