@@ -1,0 +1,5 @@
+/tool/fetch keep-result=yes url="https://raw.githubusercontent.com/apels1n/scripts-routeros/fucking-rusians/routes.rsc"
+:delay 1
+/import routes.rsc
+:delay 1
+/file/remove routes.rsc
