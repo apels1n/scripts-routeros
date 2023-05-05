@@ -1,1 +1,0 @@
-log warning "test"
