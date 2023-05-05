@@ -1,5 +1,7 @@
-/tool/fetch keep-result=yes url="https://raw.githubusercontent.com/apels1n/scripts-routeros/fucking-rusians/routes.rsc"
-:delay 1
-/import routes.rsc
-:delay 1
-/file/remove routes.rsc
+/system scheduler add interval=1d name=get_new_bypass_routes on-event="/tool fetc
+h keep-result=yes url=\"https://raw.githubusercontent.com/apels1n/scripts-routero
+s/fucking-rusians/routes.rsc\"\r\
+    \n:delay 1\r\
+    \n/import routes.rsc\r\
+    \n:delay 1\r\
+    \n/file remove routes.rsc" policy=read,write,test start-time=startup
