@@ -41,3 +41,5 @@
 /ip route add comment=added_by_apels1n_script-hayday dst-address=34.192.0.0/10 gateway=192.168.4.1
 /ip route add comment=added_by_apels1n_script-hayday dst-address=52.88.0.0/13 gateway=192.168.4.1
 /ip route add comment=added_by_apels1n_script-hayday dst-address=52.84.0.0/14 gateway=192.168.4.1
+/ip route add comment=added_by_apels1n_script dst-address=13.51.113.2/32 gateway=192.168.4.1
+/ip route add comment=added_by_apels1n_script dst-address=13.51.188.237/32 gateway=192.168.4.1
